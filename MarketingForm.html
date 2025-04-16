@@ -1,0 +1,39 @@
+<script>
+	const dateInputNames = ['spgl_privacypolicyacceptedon', 'spgl_legaltermsacceptancedatetime', 'spgl_restrictiveclausesacceptancedatetime'];
+	const radioInputElements = [
+		{ name: 'spgl_privacypolicystatus', value: '231820001' },
+		{ name: 'spgl_legaltermsacceptancestatus', value: '231820001' },
+		{ name: 'spgl_restrictiveclausesstatus', value: '231820001' }
+	];
+	
+	function setDateInputsToNow(dateInputNames) {
+		dateInputNames.forEach(name => {
+			let inputElement = document.querySelector(`input[name="${name}"]`);
+			
+			if (inputElement) {
+				let now = new Date();
+				let formattedDateTime = now.toISOString().slice(0, 16);
+				inputElement.value = formattedDateTime;
+			} else {
+				console.log(`Input element with name "${name}" not found.`);
+			}
+		});
+	}
+	
+	function processRadioInputs(radioInputElements) {
+		radioInputElements.forEach(element => {
+			let elements = document.querySelectorAll(`input[name="${element.name}"]`);
+			
+			elements.forEach(input => {
+				if (input.value === element.value) {
+					input.parentElement.style.display = 'none';
+				}
+			});
+		});
+	}
+	
+    document.addEventListener('d365mkt-afterformload', function () {
+		setDateInputsToNow(dateInputNames);
+		processRadioInputs(radioInputElements);
+    });
+</script>
